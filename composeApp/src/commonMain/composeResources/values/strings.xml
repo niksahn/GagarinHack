@@ -1,0 +1,15 @@
+<resources>
+    <string name="cyclone">Cyclone</string>
+    <string name="open_github">Open github</string>
+    <string name="run">Run</string>
+    <string name="stop">Stop</string>
+    <string name="theme">Theme</string>
+
+    <string name="fix_violation">Зафиксировать \n нарушение</string>
+    <string name="history">История обращений</string>
+    <string name="filter_all">Все</string>
+    <string name="filter_progress">В обработке</string>
+    <string name="filter_checked">Проверено</string>
+    <string name="filter_rejected">Отказано</string>
+    <string name="set_permissions">Самостоятельно укажите разрешения для приложения</string>
+</resources>
