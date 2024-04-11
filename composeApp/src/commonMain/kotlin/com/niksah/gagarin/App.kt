@@ -1,51 +1,53 @@
 package com.niksah.gagarin
 
-import androidx.compose.animation.core.*
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.rotate
-import androidx.compose.ui.graphics.ColorFilter
-import androidx.compose.ui.text.font.FontFamily
-import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.unit.dp
-import gagarinhak.composeapp.generated.resources.*
-import com.niksah.gagarin.theme.AppTheme
-import com.niksah.gagarin.theme.LocalThemeIsDark
-import com.niksah.gagarin.ui.main.Main
-import org.jetbrains.compose.resources.Font
-import org.jetbrains.compose.resources.painterResource
-import org.jetbrains.compose.resources.stringResource
-import org.jetbrains.compose.resources.vectorResource
-import com.niksah.gagarin.utils.views.Spacer
+import androidx.compose.animation.scaleIn
+import androidx.compose.animation.scaleOut
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutVertically
+import androidx.compose.runtime.Composable
+import com.niksah.gagarin.screens.camera.Camera
+import com.niksah.gagarin.screens.main.Main
+import com.niksah.seconHack.ui.theme.GagarinTheme
 import moe.tlaster.precompose.PreComposeApp
-import moe.tlaster.precompose.koin.koinViewModel
 import moe.tlaster.precompose.navigation.NavHost
 import moe.tlaster.precompose.navigation.rememberNavigator
+import moe.tlaster.precompose.navigation.transition.NavTransition
 
 @Composable
-internal fun App() = AppTheme {
-    PreComposeApp {
-        val navigator = rememberNavigator()
-        MaterialTheme {
-            NavHost(
-                navigator = navigator,
-                initialRoute = "/home",
+internal fun App() = PreComposeApp {
+    val navigator = rememberNavigator()
+    GagarinTheme {
+        NavHost(
+            navigator = navigator,
+            initialRoute = "/home",
+            navTransition = NavTransition(),
+        ) {
+            scene(
+                "/home",
             ) {
-                scene("/home") {
-                    Main()
-                }
+                Main(
+                    onCamera = { navigator.navigate("/camera") },
+                    onLoaded = {}
+                )
             }
+            scene(
+                "/camera",
+                navTransition = NavTransition(
+                    createTransition = slideInVertically(initialOffsetY = { it }),
+                    destroyTransition = slideOutVertically(targetOffsetY = { it }),
+                    pauseTransition = scaleOut(targetScale = 0.9f),
+                    resumeTransition = scaleIn(initialScale = 0.9f),
+                    exitTargetContentZIndex = 1f,
+                ),
+            ) {
+                Camera(
+                    makedPhoto = {
 
+                    }
+                )
+            }
         }
     }
 }
-
 
 internal expect fun openUrl(url: String?)

@@ -1,8 +1,6 @@
 package com.niksah.gagarin.data.network
 
 import com.niksah.gagarin.Constants.BASE_URL
-import com.niksah.gagarin.data.NetworkClient
-import com.niksah.gagarin.data.createApiSpec
 import io.ktor.client.HttpClient
 import io.ktor.client.HttpClientConfig
 import io.ktor.client.plugins.HttpTimeout
@@ -36,9 +34,9 @@ class KtorClient : NetworkClient {
             )
         }
         install(HttpTimeout) {
-            connectTimeoutMillis = 500
-            requestTimeoutMillis = 500
-            socketTimeoutMillis = 500
+            connectTimeoutMillis = 5000
+            requestTimeoutMillis = 5000
+            socketTimeoutMillis = 5000
         }
         defaultRequest {
             url(BASE_URL)

@@ -4,9 +4,10 @@ kotlin = "1.9.23"
 compose = "1.6.1"
 agp = "8.3.1"
 androidx-activityCompose = "1.8.2"
-androidx-uiTest = "1.6.4"
+androidx-uiTest = "1.6.5"
+mpfilepicker = "3.1.0"
 mvikotlin = "3.3.0"
-precomposeKoin = "1.6.0-rc05"
+precomposeKoin = "1.6.0"
 voyager = "1.0.0"
 composeImageLoader = "1.7.8"
 napier = "2.7.1"
@@ -23,11 +24,10 @@ activityKtx = "1.8.2"
 androidx-activityCompose = { module = "androidx.activity:activity-compose", version.ref = "androidx-activityCompose" }
 androidx-testManifest = { module = "androidx.compose.ui:ui-test-manifest", version.ref = "androidx-uiTest" }
 androidx-junit4 = { module = "androidx.compose.ui:ui-test-junit4", version.ref = "androidx-uiTest" }
-mvikotlin = { module = "com.arkivanov.mvikotlin:mvikotlin", version.ref = "mvikotlin" }
+mpfilepicker = { module = "com.darkrockstudios:mpfilepicker", version.ref = "mpfilepicker" }
 precompose = { module = "moe.tlaster:precompose", version.ref = "precomposeKoin" }
 precompose-koin = { module = "moe.tlaster:precompose-koin", version.ref = "precomposeKoin" }
 precompose-viewmodel = { module = "moe.tlaster:precompose-viewmodel", version.ref = "precomposeKoin" }
-voyager-navigator = { module = "cafe.adriel.voyager:voyager-navigator", version.ref = "voyager" }
 composeImageLoader = { module = "io.github.qdsfdhvh:image-loader", version.ref = "composeImageLoader" }
 napier = { module = "io.github.aakira:napier", version.ref = "napier" }
 kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinx-coroutines" }

@@ -14,7 +14,7 @@ private val LightColorPalette = lightColorScheme(
 )
 
 @Composable
-fun MaterialTheme(
+fun GagarinTheme(
 	content: @Composable () -> Unit
 ) {
 	MaterialTheme(

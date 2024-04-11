@@ -61,7 +61,7 @@ kotlin {
             implementation(compose.material3)
             implementation(compose.components.resources)
             implementation(compose.components.uiToolingPreview)
-            implementation(libs.voyager.navigator)
+          //  implementation(libs.voyager.navigator)
             implementation(libs.composeImageLoader)
             implementation(libs.napier)
             implementation(libs.kotlinx.coroutines.core)
@@ -75,6 +75,8 @@ kotlin {
             api(libs.precompose)
             api(libs.precompose.viewmodel)
             api(libs.precompose.koin)
+            implementation(libs.mpfilepicker)
+          //  implementation("com.squareup.okio:okio:3.9.0")
         }
 
         commonTest.dependencies {
@@ -89,6 +91,8 @@ kotlin {
             implementation(libs.androidx.activityCompose)
             implementation(libs.kotlinx.coroutines.android)
             implementation(libs.ktor.client.okhttp)
+            implementation ("com.google.accompanist:accompanist-permissions:0.35.0-alpha")
+            implementation("io.github.ujizin:camposer:0.4.0")
         }
 
         jvmMain.dependencies {

@@ -7,6 +7,8 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import com.niksah.gagarin.data.domainAndroidModule
+import com.niksah.gagarin.data.uiAndroidModule
 import com.niksah.gagarin.di.dataModule
 import com.niksah.gagarin.di.domainModule
 import com.niksah.gagarin.di.uiModule
@@ -19,7 +21,15 @@ class AndroidApp : Application() {
 
     override fun onCreate() {
         startKoin {
-            modules(listOf(dataModule, domainModule, uiModule))
+            modules(
+                listOf(
+                    dataModule,
+                    domainModule,
+                    uiModule,
+                    domainAndroidModule,
+                    uiAndroidModule
+                )
+            )
         }
         super.onCreate()
         INSTANCE = this

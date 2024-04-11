@@ -1,13 +1,12 @@
 package com.niksah.gagarin.data.network
 
-import com.niksah.gagarin.data.Either
+import com.niksah.gagarin.data.models.Either
 import io.ktor.client.call.body
 import io.ktor.client.plugins.ClientRequestException
 import io.ktor.client.plugins.RedirectResponseException
 import io.ktor.client.plugins.ServerResponseException
 import io.ktor.client.statement.HttpResponse
 import io.ktor.http.HttpStatusCode
-import io.ktor.util.logging.Logger
 import io.ktor.utils.io.CancellationException
 import kotlinx.serialization.SerializationException
 
@@ -47,16 +46,6 @@ sealed class ApiResponseFailure {
         override fun toString(): String = "InternalError(exception=$exception)"
     }
 }
-
-/** Возвращает `true` если ошибка запроса: [ApiResponseFailure.Cancellation]. */
-val ApiResponseFailure.isCancellation
-    get() = when (this) {
-        ApiResponseFailure.Cancellation -> true
-        is ApiResponseFailure.InternalError,
-        ApiResponseFailure.NoConnection,
-        is ApiResponseFailure.ParseError,
-        is ApiResponseFailure.ServerError -> false
-    }
 
 /** Безопасный вызов сетевого запроса, результат будет получен в виде [NetworkResponse]. */
 internal suspend inline fun <reified T> safeRequest(block: () -> HttpResponse): NetworkResponse<T> = try {

@@ -1,4 +1,4 @@
-package com.niksah.gagarin.data
+package com.niksah.gagarin.data.models
 
 /**
  * Монада [Either] создан, чтобы передать состояние, которое может находиться в одном из двух вариантов:
