@@ -15,7 +15,7 @@ fun main() = application {
     }
     Window(
         title = "GagarinHak",
-        state = rememberWindowState(width = 800.dp, height = 600.dp),
+        state = rememberWindowState(width = 1200.dp, height = 1000.dp),
         onCloseRequest = ::exitApplication,
     ) {
         window.minimumSize = Dimension(350, 600)

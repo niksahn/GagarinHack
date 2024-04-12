@@ -13,6 +13,8 @@ import kotlin.random.Random
 /** Спецификация сервиса авторизации. */
 interface ApiSpec {
     suspend fun uploadFile(file: ByteArray, type: String): NetworkResponse<String>
+
+    suspend fun getResults(id: String): NetworkResponse<Response>
 }
 
 internal fun HttpClient.createApiSpec(): ApiSpec = object : ApiSpec {
@@ -28,28 +30,35 @@ internal fun HttpClient.createApiSpec(): ApiSpec = object : ApiSpec {
             }))
         }
     }
+
+    override suspend fun getResults(id: String): NetworkResponse<Response> = safeRequest {
+        get(urlString = "/$id")
+    }
 }
 
-/** Авторизация. */
 @Serializable
-@Resource(path = "/auth")
-private class AuthRequest {
-    /** Обновление токена. */
-    @Serializable
-    @Resource(path = "/token")
-    class RefreshToken(val parent: AuthRequest = AuthRequest())
+data class Response(
+    val file: ByteArray,
+    val fields: Map<String, String>
+) {
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (other == null || this::class != other::class) return false
+
+        other as Response
+
+        if (!file.contentEquals(other.file)) return false
+        if (fields != other.fields) return false
+
+        return true
+    }
+
+    override fun hashCode(): Int {
+        var result = file.contentHashCode()
+        result = 31 * result + fields.hashCode()
+        return result
+    }
 }
-
-/** Вспомнить пароль. */
-@Serializable
-@Resource(path = "/forgot")
-private class ForgotRequest
-
-
-/** Сменить пароль. */
-@Serializable
-@Resource(path = "/resetPassword")
-private class ChangePasswordRequest
 
 
 @Serializable

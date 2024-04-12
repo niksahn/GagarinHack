@@ -3,10 +3,9 @@ package com.niksah.gagarin.screens.camera
 import com.niksah.gagarin.utils.base.State
 
 data class CameraScreenState(
-	val isVideoRecording: Boolean,
 	val makingPhoto: Boolean,
-	val camera: CamState,
-	val uploadedFileId: String?
+	val uploadedFileId: String?,
+	val showScanner: Boolean
 ) : State()
 
 enum class CamState {
@@ -14,8 +13,7 @@ enum class CamState {
 }
 
 internal fun init() = CameraScreenState(
-	isVideoRecording = false,
 	makingPhoto = false,
-	camera = CamState.VIDEO,
-	uploadedFileId = null
+	uploadedFileId = null,
+	showScanner = true
 )

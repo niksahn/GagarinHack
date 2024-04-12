@@ -10,7 +10,7 @@ private val LightColorPalette = lightColorScheme(
 	onPrimary = Purple500,
 	secondary = Purple700,
 	background = Color.White,
-	surface = Color.Black
+	surface = Color.Black,
 )
 
 @Composable

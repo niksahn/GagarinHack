@@ -1,5 +1,7 @@
 package com.niksah.gagarin.screens.camera
 
+import android.app.ActivityManager
+import android.content.Context
 import android.widget.Toast
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.background
@@ -15,9 +17,12 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material.Scaffold
 import androidx.compose.material.ripple.rememberRipple
+import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -26,38 +31,42 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import com.niksah.gagarin.screens.main.MainViewModel
 import com.niksah.gagarin.utils.base.subscribeEvents
 import com.niksah.gagarin.utils.base.subscribeScreenState
+import com.niksah.gagarin.utils.views.Alert
 import com.niksah.gagarin.views.MissingPermissionsComponent
 import com.ujizin.camposer.CameraPreview
 import com.ujizin.camposer.state.CamSelector
 import com.ujizin.camposer.state.CameraState
 import com.ujizin.camposer.state.rememberCamSelector
 import com.ujizin.camposer.state.rememberCameraState
+import gagarinhak.composeapp.generated.resources.Res
+import gagarinhak.composeapp.generated.resources.arrow_back
 import moe.tlaster.precompose.koin.koinViewModel
+import org.jetbrains.compose.resources.painterResource
 
 @Composable
 internal actual fun Camera(
-    makedPhoto:() -> Unit
+    makedPhoto: () -> Unit,
+    goBack: () -> Unit
 ) {
-
+    var showError by remember {
+        mutableStateOf("")
+    }
     val context = LocalContext.current
     val viewModel = koinViewModel(CameraViewModel::class)
     val state by viewModel.subscribeScreenState()
-
     MissingPermissionsComponent {
         val cameraState = rememberCameraState()
         val camSelector by rememberCamSelector(CamSelector.Back)
         viewModel.subscribeEvents {
             when (it) {
-                is CameraEvent.Failure -> Toast.makeText(
-                    context,
-                    "Ошибка загрузки файла ${it.message}",
-                    Toast.LENGTH_SHORT
-                ).show()
+                is CameraEvent.Failure -> {
+                    showError = it.message ?: "ERROR"
+                }
 
                 CameraEvent.MakedPhoto -> {
                     Toast.makeText(
@@ -71,17 +80,25 @@ internal actual fun Camera(
                 }
             }
         }
-        CamUi(
-            cameraState = cameraState,
-            camSelector = camSelector,
-            makingPhoto = state.makingPhoto,
-            takePicture = {
-                when (state.camera) {
-                    CamState.PHOTO -> viewModel.takePicture(cameraState)
-                    CamState.VIDEO -> viewModel.takePicture(cameraState) //viewModel.makeVideo(cameraState)
-                }
-            }
-        )
+        if (state.showScanner) {
+            Scanner(
+                onResult = viewModel::onResultScan,
+                onBack = goBack,
+                holdError = viewModel::onNotEnableScanner
+            )
+        } else {
+            CamUi(
+                cameraState = cameraState,
+                camSelector = camSelector,
+                makingPhoto = state.makingPhoto,
+                takePicture = { viewModel.takePicture(cameraState) },
+                goBack = goBack
+            )
+        }
+        Alert(showError = showError) {
+            showError = ""
+            goBack()
+        }
     }
 }
 
@@ -91,32 +108,43 @@ fun CamUi(
     makingPhoto: Boolean,
     camSelector: CamSelector,
     takePicture: () -> Unit,
+    goBack: () -> Unit
 ) {
-
-    CameraPreview(
-        cameraState = cameraState,
-        camSelector = camSelector,
-    ) {
-        if (makingPhoto) {
-            Box(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .background(Color.Black)
-            )
-        } else {
-            Column {
-                Box(modifier = Modifier.weight(1F))
+    Scaffold {
+        CameraPreview(
+            modifier = Modifier.padding(it),
+            cameraState = cameraState,
+            camSelector = camSelector,
+        ) {
+            if (makingPhoto) {
                 Box(
                     modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(bottom = 32.dp),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Button(
-                        onClick = takePicture,
-                        color = Color.White,
-                        size = 84.dp
+                        .fillMaxSize()
+                        .background(Color.Black)
+                )
+            } else {
+                Column {
+                    Icon(
+                        painter = painterResource(resource = Res.drawable.arrow_back),
+                        contentDescription = null,
+                        modifier = Modifier
+                            .clickable(onClick = goBack, role = Role.Button)
+                            .padding(top = 64.dp, start = 32.dp)
+                            .background(color = Color.White.copy(0.2f), shape = CircleShape)
                     )
+                    Box(modifier = Modifier.weight(1F))
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(bottom = 64.dp),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Button(
+                            onClick = takePicture,
+                            color = Color.White,
+                            size = 84.dp
+                        )
+                    }
                 }
             }
         }

@@ -1,5 +1,7 @@
 package com.niksah.gagarin.screens.camera
 
+import android.content.Context
+import android.net.Uri
 import android.os.Build
 import android.util.Log
 import com.niksah.gagarin.data.FileStorageRepository
@@ -10,6 +12,7 @@ import com.niksah.gagarin.domain.FileRepositoryImpl
 import com.niksah.gagarin.utils.base.BaseViewModel
 import com.ujizin.camposer.state.CameraState
 import com.ujizin.camposer.state.ImageCaptureResult
+import java.io.IOException
 
 class CameraViewModel(
     private val fileRepository: FileRepository,
@@ -49,7 +52,7 @@ class CameraViewModel(
                                     trySendEvent(CameraEvent.Failure("Network error"))
                                 },
                                 ifRight = {
-                                    fileRepository.file.emit(FileRepositoryImpl.File(it))
+                                    fileRepository.file.emit(it)
                                     trySendEvent(CameraEvent.MakedPhoto)
                                 }
                             )
@@ -57,6 +60,33 @@ class CameraViewModel(
                     }
                 }
             }
+        }
+    }
+
+    @Throws(IOException::class)
+    private fun readBytes(context: Context, uri: Uri): ByteArray? =
+        context.contentResolver.openInputStream(uri)?.use { it.buffered().readBytes() }
+
+    fun onResultScan(uri: Uri, context: Context) {
+        launchViewModelScope {
+            readBytes(context, uri)?.let { file ->
+                apiRepository.uploadImage(file, "jpg").fold(
+                    ifLeft = {
+                        print(it)
+                        trySendEvent(CameraEvent.Failure("Network error"))
+                    },
+                    ifRight = {
+                        fileRepository.file.emit(it)
+                        trySendEvent(CameraEvent.MakedPhoto)
+                    }
+                )
+            }
+        }
+    }
+
+    fun onNotEnableScanner() {
+        updateState {
+            it.copy(showScanner = false)
         }
     }
 

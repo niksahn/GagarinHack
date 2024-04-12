@@ -5,4 +5,5 @@
     <string name="load_file">Загрузить \nдокумент</string>
     <string name="load_file_">Загрузите файл</string>
     <string name="doc_scanner">Сканнер документов</string>
+    <string name="go_back">Вернуться \nназад</string>
 </resources>

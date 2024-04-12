@@ -1,12 +1,18 @@
 [versions]
 
+comDynamsoftDynamsoftcapturevisionrouter = "2.2.10"
+dynamsoftcameraenhancer = "4.2.0"
+dynamsoftcore = "3.2.10"
+dynamsoftutility = "1.2.10"
+koinAndroidVersion = "2.0.1"
 kotlin = "1.9.23"
 compose = "1.6.1"
-agp = "8.3.1"
+agp = "8.3.2"
 androidx-activityCompose = "1.8.2"
 androidx-uiTest = "1.6.5"
 mpfilepicker = "3.1.0"
 mvikotlin = "3.3.0"
+playServicesMlkitDocumentScannerVersion = "16.0.0-beta1"
 precomposeKoin = "1.6.0"
 voyager = "1.0.0"
 composeImageLoader = "1.7.8"
@@ -18,13 +24,24 @@ kotlinx-serialization = "1.6.3"
 multiplatformSettings = "1.1.1"
 koin = "3.5.3"
 activityKtx = "1.8.2"
+voyagerNavigator = "1.0.0"
 
 [libraries]
 
 androidx-activityCompose = { module = "androidx.activity:activity-compose", version.ref = "androidx-activityCompose" }
 androidx-testManifest = { module = "androidx.compose.ui:ui-test-manifest", version.ref = "androidx-uiTest" }
 androidx-junit4 = { module = "androidx.compose.ui:ui-test-junit4", version.ref = "androidx-uiTest" }
+com-dynamsoft-dynamsoftcapturevisionrouter3 = { module = "com.dynamsoft:dynamsoftcapturevisionrouter", version.ref = "comDynamsoftDynamsoftcapturevisionrouter" }
+dynamsoftcameraenhancer = { module = "com.dynamsoft:dynamsoftcameraenhancer", version.ref = "dynamsoftcameraenhancer" }
+dynamsoftcore = { module = "com.dynamsoft:dynamsoftcore", version.ref = "dynamsoftcore" }
+dynamsoftdocumentnormalizer = { module = "com.dynamsoft:dynamsoftdocumentnormalizer", version.ref = "comDynamsoftDynamsoftcapturevisionrouter" }
+dynamsoftimageprocessing = { module = "com.dynamsoft:dynamsoftimageprocessing", version.ref = "comDynamsoftDynamsoftcapturevisionrouter" }
+dynamsoftlicense = { module = "com.dynamsoft:dynamsoftlicense", version.ref = "dynamsoftcore" }
+dynamsoftutility = { module = "com.dynamsoft:dynamsoftutility", version.ref = "dynamsoftutility" }
+gms-play-services-mlkit-document-scanner = { module = "com.google.android.gms:play-services-mlkit-document-scanner", version.ref = "playServicesMlkitDocumentScannerVersion" }
+koin-koin-android = { module = "org.koin:koin-android", version.ref = "koin" }
 mpfilepicker = { module = "com.darkrockstudios:mpfilepicker", version.ref = "mpfilepicker" }
+multiplatform-settings-no-arg = { module = "com.russhwolf:multiplatform-settings-no-arg", version.ref = "multiplatformSettings" }
 precompose = { module = "moe.tlaster:precompose", version.ref = "precomposeKoin" }
 precompose-koin = { module = "moe.tlaster:precompose-koin", version.ref = "precomposeKoin" }
 precompose-viewmodel = { module = "moe.tlaster:precompose-viewmodel", version.ref = "precomposeKoin" }
@@ -46,6 +63,7 @@ ktor-content-negotiation = { module = "io.ktor:ktor-client-content-negotiation",
 ktor-serialization-json = { module = "io.ktor:ktor-serialization-kotlinx-json", version.ref = "ktor" }
 ktor-logging = { module = "io.ktor:ktor-client-logging", version.ref = "ktor" }
 androidx-activity-ktx = { group = "androidx.activity", name = "activity-ktx", version.ref = "activityKtx" }
+#voyager-navigator = { module = "cafe.adriel.voyager:voyager-navigator", version.ref = "voyagerNavigator" }
 
 [plugins]
 multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
@@ -56,3 +74,4 @@ kotlinx-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", vers
 
 [bundles]
 ktor = ["ktor-core", "ktor-content-negotiation", "ktor-serialization-json", "ktor-resources", "ktor-logging"]
+dynamsoft = ["com-dynamsoft-dynamsoftcapturevisionrouter3","dynamsoftcameraenhancer","dynamsoftcore","dynamsoftdocumentnormalizer","dynamsoftlicense","dynamsoftutility"]

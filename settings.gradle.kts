@@ -6,6 +6,7 @@ pluginManagement {
         google()
         gradlePluginPortal()
         mavenCentral()
+        maven("https://download2.dynamsoft.com/maven/aar")
     }
 }
 
