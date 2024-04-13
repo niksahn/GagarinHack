@@ -15,6 +15,7 @@ interface ApiSpec {
     suspend fun uploadFile(file: ByteArray, type: String): NetworkResponse<String>
 
     suspend fun getResults(id: String): NetworkResponse<Response>
+    suspend fun getHistory(userId: String): NetworkResponse<Unit>
 }
 
 internal fun HttpClient.createApiSpec(): ApiSpec = object : ApiSpec {
@@ -33,6 +34,10 @@ internal fun HttpClient.createApiSpec(): ApiSpec = object : ApiSpec {
 
     override suspend fun getResults(id: String): NetworkResponse<Response> = safeRequest {
         get(urlString = "/$id")
+    }
+
+    override suspend fun getHistory(userId: String): NetworkResponse<Unit> = safeRequest {
+        get(urlString = "/history/$userId")
     }
 }
 

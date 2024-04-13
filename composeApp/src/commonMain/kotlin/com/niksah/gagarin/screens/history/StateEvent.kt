@@ -3,6 +3,7 @@ package com.niksah.gagarin.screens.history
 import androidx.compose.ui.graphics.ImageBitmap
 import com.niksah.gagarin.utils.base.Event
 import com.niksah.gagarin.utils.base.State
+import org.jetbrains.compose.resources.DrawableResource
 
 sealed class HistoryState : State() {
     data object Preparing : HistoryState()
@@ -11,7 +12,12 @@ sealed class HistoryState : State() {
     ) : HistoryState()
 }
 
-sealed class HistoryEvent : Event()
+sealed class HistoryEvent : Event() {
+    data class Failure(
+        val message: String
+    ) : HistoryEvent()
+}
+
 data class History(
     val image: ImageBitmap,
     val name: String,
@@ -20,6 +26,12 @@ data class History(
     val status: Status
 ) {
     enum class Status {
-        IN_PROGRESS, CHECKED, REJECTED
+        IN_PROGRESS, CHECKED, REJECTED;
+
+        fun toDrawable(): DrawableResource = when (this) {
+            IN_PROGRESS -> TODO()
+            CHECKED -> TODO()
+            REJECTED -> TODO()
+        }
     }
 }

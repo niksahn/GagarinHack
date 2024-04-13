@@ -20,4 +20,8 @@ class ApiRepositoryImpl(private val client: NetworkClient) : ApiRepository {
             }
         )
     }
+
+    override suspend fun getHistory(id: String): NetworkResponse<Unit> {
+        return client.api.getHistory(id)
+    }
 }

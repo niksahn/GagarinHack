@@ -1,7 +1,7 @@
 package com.niksah.gagarin.screens.result
 
-actual fun Content(onBack: () -> Unit) {
-}
+import androidx.compose.runtime.Composable
+
 
 @Composable
 actual fun Content(

@@ -10,6 +10,7 @@ import androidx.compose.runtime.Composable
 import com.niksah.gagarin.data.CurrentPlatform
 import com.niksah.gagarin.data.Platform
 import com.niksah.gagarin.screens.camera.Camera
+import com.niksah.gagarin.screens.history.HistoryUI
 import com.niksah.gagarin.screens.main.Main
 import com.niksah.gagarin.utils.views.bottomBar.BottomBar
 import com.niksah.gagarin.utils.views.bottomBar.BottomBarDestination
@@ -70,10 +71,7 @@ internal fun App() = PreComposeApp {
                 scene(
                     "/history",
                 ) {
-                    Main(
-                        onCamera = { navigator.navigate("/camera") },
-                        onLoaded = {}
-                    )
+                    HistoryUI()
                 }
             }
         }
