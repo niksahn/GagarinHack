@@ -18,11 +18,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.niksah.seconHack.ui.theme.link
 import gagarinhak.composeapp.generated.resources.Res
 import gagarinhak.composeapp.generated.resources.doc_scanner
 import gagarinhak.composeapp.generated.resources.file_earmark_arrow_up
+import gagarinhak.composeapp.generated.resources.history
 import gagarinhak.composeapp.generated.resources.load_file
 import gagarinhak.composeapp.generated.resources.load_file_
 import org.jetbrains.compose.resources.painterResource
@@ -30,11 +33,12 @@ import org.jetbrains.compose.resources.stringResource
 
 @Composable
 fun FullScreenUi(
-    onShowFilePicker: ()-> Unit
+    onShowFilePicker: () -> Unit,
+    onHistory: () -> Unit
 ) {
     Scaffold(
         topBar = {
-            TopBar(onShowFilePicker)
+            TopBar(onShowFilePicker, onHistory)
         }
     ) {
         Box(
@@ -51,14 +55,31 @@ fun FullScreenUi(
 
 
 @Composable
-fun TopBar(onShowFilePicker: () -> Unit){
+fun TopBar(
+    onShowFilePicker: () -> Unit,
+    onHistory: () -> Unit
+) {
     Column {
-        Row(modifier = Modifier.fillMaxWidth().padding(32.dp)) {
-            Text(
+        Row(
+            modifier = Modifier.fillMaxWidth().padding(32.dp),
+        ) {
+            Row(
                 modifier = Modifier.weight(1f),
-                style = MaterialTheme.typography.headlineLarge,
-                text = stringResource(Res.string.doc_scanner)
-            )
+                horizontalArrangement = Arrangement.spacedBy(16.dp)
+            ) {
+                Text(
+                    modifier = Modifier,
+                    style = MaterialTheme.typography.headlineLarge,
+                    text = stringResource(Res.string.doc_scanner)
+                )
+                Text(
+                    modifier = Modifier.clickable(onClick = onHistory),
+                    style = MaterialTheme.typography.headlineLarge,
+                    textDecoration = TextDecoration.Underline,
+                    color = link,
+                    text = stringResource(Res.string.history),
+                )
+            }
             Row(
                 horizontalArrangement = Arrangement.spacedBy(4.dp),
                 modifier = Modifier.clickable(onClick = onShowFilePicker)

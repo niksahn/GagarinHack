@@ -11,3 +11,6 @@ actual fun decode(byteArray: ByteArray): ImageBitmap {
     val encodedImageData = Base64.Default.decode(byteArray)
     return BitmapFactory.decodeByteArray(encodedImageData, 0, encodedImageData.size).asImageBitmap()
 }
+
+actual fun encodeToByteArray(image: String) =
+    image.removePrefix("\"\\\"").removeSuffix("\\\"\"").encodeToByteArray()

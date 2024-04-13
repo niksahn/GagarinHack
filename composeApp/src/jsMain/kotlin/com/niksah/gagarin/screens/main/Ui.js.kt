@@ -106,8 +106,4 @@ suspend fun Document.selectFilesFromDisk(
     tempInput.remove()
 }
 
-@Composable
-actual fun Content(onShowFilePicker: () -> Unit, onCamera: () -> Unit) {
-    FullScreenUi(onShowFilePicker)
-}
 

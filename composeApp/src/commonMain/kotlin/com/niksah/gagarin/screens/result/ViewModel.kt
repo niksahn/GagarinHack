@@ -1,29 +1,34 @@
 package com.niksah.gagarin.screens.result
 
-import com.niksah.gagarin.data.network.Response
-import com.niksah.gagarin.data.repositories.FileRepository
+import androidx.compose.ui.graphics.ImageBitmap
+import com.niksah.gagarin.data.models.Response
+import com.niksah.gagarin.data.models.fold
+import com.niksah.gagarin.data.repositories.ApiRepository
+import com.niksah.gagarin.data.repositories.ResponseRepository
 import com.niksah.gagarin.utils.base.BaseViewModel
 
 class ResultViewModel(
-    val fileRepositoryImpl: FileRepository
+    responseRepository: ResponseRepository,
+    private val apiRepository: ApiRepository
 ) : BaseViewModel<ResultState, ResultEvent>(ResultState.Loading) {
 
     init {
-        launchViewModelScope {
-            fileRepositoryImpl.file.value?.let { response ->
+        responseRepository.selected.value?.let { resp ->
+            launchViewModelScope {
+                var image: ImageBitmap? = null
+                apiRepository.getImage(resp.fileId).fold(
+                    ifLeft = { },
+                    ifRight = { im -> image = decode(encodeToByteArray(im)) }
+                )
+                val stat = resp.toResultState(image)
                 updateState {
-                    response.toState()
+                    stat
                 }
             }
-        }
+        } ?: trySendEvent(ResultEvent.GoBack)
     }
 
     fun onBack() {
         trySendEvent(ResultEvent.GoBack)
     }
 }
-
-fun Response.toState() = ResultState.Content(
-    image = decode(file),
-    fields = fields.map { ResultState.Content.Field(it.key, it.value) }
-)

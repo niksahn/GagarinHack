@@ -20,66 +20,36 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import com.niksah.gagarin.screens.main.TopBar
 import gagarinhak.composeapp.generated.resources.Res
 import gagarinhak.composeapp.generated.resources.arrow_back
 import gagarinhak.composeapp.generated.resources.doc_scanner
 import gagarinhak.composeapp.generated.resources.go_back
+import gagarinhak.composeapp.generated.resources.icon
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 
 @Composable
 fun FullScreenUi(
-    data: ResultState.Content,
-    onBack: () -> Unit
+    data: ResultState.Content, onBack: () -> Unit
 ) {
-    Scaffold(
-        topBar = {
-            Column {
-                Row(modifier = Modifier.fillMaxWidth().padding(32.dp)) {
-                    Text(
-                        modifier = Modifier.weight(1f),
-                        style = MaterialTheme.typography.headlineLarge,
-                        text = stringResource(Res.string.doc_scanner)
-                    )
-                    Row(
-                        horizontalArrangement = Arrangement.spacedBy(4.dp),
-                        modifier = Modifier.clickable(onClick = onBack)
-                    ) {
-                        Icon(
-                            modifier = Modifier.size(56.dp),
-                            painter = painterResource(Res.drawable.arrow_back),
-                            contentDescription = null,
-                            tint = MaterialTheme.colorScheme.secondary
-                        )
-                        Text(
-                            style = MaterialTheme.typography.bodyMedium,
-                            color = MaterialTheme.colorScheme.secondary,
-                            text = stringResource(Res.string.go_back),
-                            modifier = Modifier.align(Alignment.CenterVertically)
-                        )
-                    }
-                }
-                HorizontalDivider(
-                    modifier = Modifier.fillMaxWidth(),
-                    thickness = 1.dp,
-                    color = Color.Black
-                )
-            }
-            // TopBar(onShowFilePicker = {})
-        }
-    ) {
+    Scaffold(topBar = {
+        TopBarBack(onBack = onBack)
+    }) {
         Row(
-            modifier = Modifier.padding(16.dp),
-            horizontalArrangement = Arrangement.spacedBy(16.dp)
+            modifier = Modifier.padding(it).padding(16.dp), horizontalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            Image(
+            data.image?.let { it1 ->
+                Image(
+                    modifier = Modifier.weight(1F), bitmap = it1, contentDescription = null
+                )
+            } ?: Image(
                 modifier = Modifier.weight(1F),
-                bitmap = data.image,
+                painter = painterResource(Res.drawable.icon),
                 contentDescription = null
             )
             LazyColumn(
-                modifier = Modifier.weight(1F),
-                verticalArrangement = Arrangement.spacedBy(16.dp)
+                modifier = Modifier.weight(1F), verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
                 items(
                     items = data.fields
@@ -102,5 +72,41 @@ fun FullScreenUi(
                 }
             }
         }
+    }
+}
+
+
+@Composable
+fun TopBarBack(
+    onBack: () -> Unit
+) {
+    Column {
+        Row(modifier = Modifier.fillMaxWidth().padding(32.dp)) {
+            Text(
+                modifier = Modifier.weight(1f),
+                style = MaterialTheme.typography.headlineLarge,
+                text = stringResource(Res.string.doc_scanner)
+            )
+            Row(
+                horizontalArrangement = Arrangement.spacedBy(4.dp),
+                modifier = Modifier.clickable(onClick = onBack)
+            ) {
+                Icon(
+                    modifier = Modifier.size(56.dp),
+                    painter = painterResource(Res.drawable.arrow_back),
+                    contentDescription = null,
+                    tint = MaterialTheme.colorScheme.secondary
+                )
+                Text(
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.secondary,
+                    text = stringResource(Res.string.go_back),
+                    modifier = Modifier.align(Alignment.CenterVertically)
+                )
+            }
+        }
+        HorizontalDivider(
+            modifier = Modifier.fillMaxWidth(), thickness = 1.dp, color = Color.Black
+        )
     }
 }

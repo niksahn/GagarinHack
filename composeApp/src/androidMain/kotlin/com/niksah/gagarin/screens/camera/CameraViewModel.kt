@@ -3,22 +3,30 @@ package com.niksah.gagarin.screens.camera
 import android.content.Context
 import android.net.Uri
 import android.os.Build
-import android.util.Log
 import com.niksah.gagarin.data.FileStorageRepository
 import com.niksah.gagarin.data.models.fold
 import com.niksah.gagarin.data.repositories.ApiRepository
-import com.niksah.gagarin.data.repositories.FileRepository
-import com.niksah.gagarin.domain.FileRepositoryImpl
+import com.niksah.gagarin.data.repositories.ResponseRepository
+import com.niksah.gagarin.data.repositories.SettingsRepository
 import com.niksah.gagarin.utils.base.BaseViewModel
 import com.ujizin.camposer.state.CameraState
 import com.ujizin.camposer.state.ImageCaptureResult
 import java.io.IOException
 
 class CameraViewModel(
-    private val fileRepository: FileRepository,
+    private val responseRepository: ResponseRepository,
     private val storageRepository: FileStorageRepository,
-    private val apiRepository: ApiRepository
+    private val apiRepository: ApiRepository,
+    private val settingsRepository: SettingsRepository
 ) : BaseViewModel<CameraScreenState, CameraEvent>(init()) {
+
+    init {
+       updateState {
+           it.copy(
+               userId = settingsRepository.id.get()?:""
+           )
+       }
+    }
     fun takePicture(cameraState: CameraState) {
         launchViewModelScope {
             updateState {
@@ -46,13 +54,13 @@ class CameraViewModel(
                 is ImageCaptureResult.Success -> {
                     launchViewModelScope {
                         getFile()?.readBytes()?.let { file ->
-                            apiRepository.uploadImage(file, "jpg").fold(
+                            apiRepository.uploadImage(file, currentState.userId).fold(
                                 ifLeft = {
                                     print(it)
                                     trySendEvent(CameraEvent.Failure("Network error"))
                                 },
                                 ifRight = {
-                                    fileRepository.file.emit(it)
+                                //    responseRepository.history.emit(it)
                                     trySendEvent(CameraEvent.MakedPhoto)
                                 }
                             )
@@ -70,13 +78,13 @@ class CameraViewModel(
     fun onResultScan(uri: Uri, context: Context) {
         launchViewModelScope {
             readBytes(context, uri)?.let { file ->
-                apiRepository.uploadImage(file, "jpg").fold(
+                apiRepository.uploadImage(file,  currentState.userId).fold(
                     ifLeft = {
                         print(it)
                         trySendEvent(CameraEvent.Failure("Network error"))
                     },
                     ifRight = {
-                        fileRepository.file.emit(it)
+                      //  responseRepository.history.emit(it)
                         trySendEvent(CameraEvent.MakedPhoto)
                     }
                 )

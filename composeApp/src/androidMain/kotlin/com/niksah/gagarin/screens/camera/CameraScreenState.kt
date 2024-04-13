@@ -5,7 +5,8 @@ import com.niksah.gagarin.utils.base.State
 data class CameraScreenState(
 	val makingPhoto: Boolean,
 	val uploadedFileId: String?,
-	val showScanner: Boolean
+	val showScanner: Boolean,
+	val userId: String
 ) : State()
 
 enum class CamState {
@@ -15,5 +16,6 @@ enum class CamState {
 internal fun init() = CameraScreenState(
 	makingPhoto = false,
 	uploadedFileId = null,
-	showScanner = true
+	showScanner = true,
+	userId = ""
 )

@@ -14,7 +14,10 @@ import moe.tlaster.precompose.flow.collectAsStateWithLifecycle
 import moe.tlaster.precompose.koin.koinViewModel
 
 @Composable
-fun HistoryUI() {
+fun HistoryUI(
+    onBack: () -> Unit,
+    onItem: () -> Unit
+) {
     var showError by remember { mutableStateOf("") }
     val viewModel = koinViewModel(HistoryViewModel::class)
     val state = viewModel.screenState.collectAsStateWithLifecycle()
@@ -30,24 +33,32 @@ fun HistoryUI() {
             showError = showError,
             onDismissRequest = {
                 showError = ""
-                viewModel.fetch()
+                //  viewModel.fetch()
             }
         )
     }
-    when (state.value) {
-        is HistoryState.Content -> {
-            when (CurrentPlatform.current) {
-                Platform.Ios,
-                Platform.Android -> MobileUi(
-                    state = state.value as HistoryState.Content
-                )
+    if (state.value.isPrepairing) {
+        Loader()
+    } else {
+        when (CurrentPlatform.current) {
+            Platform.Ios,
+            Platform.Android -> MobileUi(
+                state = state.value,
+                onItem = {
+                    viewModel.onItem(it)
+                    onItem()
+                }
+            )
 
-                Platform.Web,
-                Platform.Pc -> FullScreenUi()
-            }
+            Platform.Web,
+            Platform.Pc -> FullScreenUi(
+                state = state.value,
+                onBack = onBack,
+                onItem = {
+                    viewModel.onItem(it)
+                    onItem()
+                }
+            )
         }
-
-        HistoryState.Preparing -> Loader()
     }
-
 }

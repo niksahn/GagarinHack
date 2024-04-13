@@ -1,7 +1,5 @@
 package com.niksah.gagarin.screens.camera
 
-import android.app.ActivityManager
-import android.content.Context
 import android.widget.Toast
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.background
@@ -51,7 +49,7 @@ import org.jetbrains.compose.resources.painterResource
 @Composable
 internal actual fun Camera(
     makedPhoto: () -> Unit,
-    goBack: () -> Unit
+    onBack: () -> Unit
 ) {
     var showError by remember {
         mutableStateOf("")
@@ -74,16 +72,14 @@ internal actual fun Camera(
                         "Фото сделано",
                         Toast.LENGTH_SHORT
                     ).show()
-                    viewModel.getFile()?.let {
-                        makedPhoto()
-                    }
+                    makedPhoto()
                 }
             }
         }
         if (state.showScanner) {
             Scanner(
                 onResult = viewModel::onResultScan,
-                onBack = goBack,
+                onBack = onBack,
                 holdError = viewModel::onNotEnableScanner
             )
         } else {
@@ -92,12 +88,12 @@ internal actual fun Camera(
                 camSelector = camSelector,
                 makingPhoto = state.makingPhoto,
                 takePicture = { viewModel.takePicture(cameraState) },
-                goBack = goBack
+                goBack = onBack
             )
         }
         Alert(showError = showError) {
             showError = ""
-            goBack()
+            onBack()
         }
     }
 }

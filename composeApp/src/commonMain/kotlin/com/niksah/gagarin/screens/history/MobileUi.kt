@@ -1,7 +1,9 @@
 package com.niksah.gagarin.screens.history
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.height
@@ -18,14 +20,18 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
+import com.niksah.gagarin.utils.views.Loader
 import org.jetbrains.compose.resources.painterResource
 
 @Composable
-fun MobileUi(state: HistoryState.Content) {
+fun MobileUi(
+    state: HistoryState,
+    onItem: (id: String) -> Unit
+) {
     Scaffold {
-        LazyColumn(modifier = Modifier.padding(16.dp)) {
+        LazyColumn(modifier = Modifier.padding(it).padding(16.dp)) {
             items(items = state.history) {
-                HistoryItem(modifier = Modifier, item = it)
+                HistoryItem(modifier = Modifier.clickable { onItem(it.id) }, item = it)
             }
         }
     }
@@ -42,23 +48,28 @@ fun HistoryItem(
             modifier = Modifier.height(72.dp),
             horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            Image(
-                bitmap = item.image,
-                contentDescription = null,
-                modifier = Modifier
-                    .size(32.dp, 72.dp)
-                    .clip(MaterialTheme.shapes.extraLarge),
-            )
+            item.image?.let {
+                Image(
+                    bitmap = it,
+                    contentDescription = null,
+                    modifier = Modifier
+                        .size(32.dp, 72.dp)
+                        .clip(MaterialTheme.shapes.extraLarge),
+                )
+            } ?: Box(modifier = Modifier.size(64.dp)) {
+                Loader()
+            }
+
             Column(
-                modifier = Modifier.padding(4.dp),
+                modifier = Modifier.padding(4.dp).weight(1f),
                 verticalArrangement = Arrangement.spacedBy(2.dp)
             ) {
                 Text(text = item.name)
-                Text(text = item.data)
-                Text(text = item.date)
+                item.data?.let { Text(text = it) }
+                //  Text(text = item.)
             }
             Image(
-                modifier = Modifier.weight(1f),
+                modifier = Modifier,
                 painter = painterResource(item.status.toDrawable()),
                 contentDescription = null
             )

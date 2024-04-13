@@ -6,4 +6,14 @@
     <string name="load_file_">Загрузите файл</string>
     <string name="doc_scanner">Сканнер документов</string>
     <string name="go_back">Вернуться \nназад</string>
+    <string name="file_loaded">Файл загружен\n Загляните в историю</string>
+    <string name="passport">Паспорт</string>
+    <string name="pts">ПТС</string>
+    <string name="sts">CТС</string>
+    <string name="rider_r">Водительские права</string>
+    <string name="doc_type">Тип документа</string>
+    <string name="page_num"> Номер страницы</string>
+    <string name="series">Серия</string>
+    <string name="number">Номер</string>
+    <string name="history">История</string>
 </resources>

@@ -53,8 +53,3 @@ actual fun FileChooser(
         }
     }
 }
-
-@Composable
-actual fun Content(onShowFilePicker: () -> Unit, onCamera: () -> Unit) {
-    MobileUi(onShowFilePicker, onCamera)
-}

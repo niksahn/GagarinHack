@@ -1,7 +1,5 @@
 package com.niksah.gagarin.data
 
-import android.app.ActivityManager
-import android.content.Context
 import com.google.mlkit.vision.documentscanner.GmsDocumentScannerOptions
 import com.niksah.gagarin.screens.camera.CameraViewModel
 import org.koin.dsl.module
@@ -9,7 +7,7 @@ import org.koin.dsl.module
 
 val uiAndroidModule = module {
     factory {
-        CameraViewModel(get(), get(), get())
+        CameraViewModel(get(), get(), get(), get())
     }
     single {
         GmsDocumentScannerOptions.Builder()

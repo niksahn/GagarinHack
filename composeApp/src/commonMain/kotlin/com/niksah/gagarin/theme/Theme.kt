@@ -11,6 +11,7 @@ private val LightColorPalette = lightColorScheme(
 	secondary = Purple700,
 	background = Color.White,
 	surface = Color.Black,
+	onSurface = link
 )
 
 @Composable

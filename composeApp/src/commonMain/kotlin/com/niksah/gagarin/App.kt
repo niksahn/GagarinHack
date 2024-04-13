@@ -4,7 +4,6 @@ import androidx.compose.animation.scaleIn
 import androidx.compose.animation.scaleOut
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
-import androidx.compose.foundation.layout.Column
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import com.niksah.gagarin.data.CurrentPlatform
@@ -12,6 +11,7 @@ import com.niksah.gagarin.data.Platform
 import com.niksah.gagarin.screens.camera.Camera
 import com.niksah.gagarin.screens.history.HistoryUI
 import com.niksah.gagarin.screens.main.Main
+import com.niksah.gagarin.screens.result.ResultUi
 import com.niksah.gagarin.utils.views.bottomBar.BottomBar
 import com.niksah.gagarin.utils.views.bottomBar.BottomBarDestination
 import com.niksah.seconHack.ui.theme.GagarinTheme
@@ -22,10 +22,10 @@ import moe.tlaster.precompose.navigation.rememberNavigator
 import moe.tlaster.precompose.navigation.transition.NavTransition
 
 @Composable
-internal fun App() = PreComposeApp {
-    val navigator = rememberNavigator()
-    val currentDestination = navigator.currentEntry.collectAsStateWithLifecycle(null)
-    GagarinTheme {
+internal fun App() = GagarinTheme {
+    PreComposeApp {
+        val navigator = rememberNavigator()
+        val currentDestination = navigator.currentEntry.collectAsStateWithLifecycle(null)
         Scaffold(
             bottomBar = {
                 if (BottomBarDestination.entries.any {
@@ -46,7 +46,12 @@ internal fun App() = PreComposeApp {
                 ) {
                     Main(
                         onCamera = { navigator.navigate("/camera") },
-                        onLoaded = {}
+                        onLoaded = {
+                            navigator.navigate("/history")
+                        },
+                        onHistory = {
+                            navigator.navigate("/history")
+                        }
                     )
                 }
                 scene(
@@ -61,9 +66,9 @@ internal fun App() = PreComposeApp {
                 ) {
                     Camera(
                         makedPhoto = {
-
+                            navigator.navigate("/history")
                         },
-                        goBack = {
+                        onBack = {
                             navigator.goBack()
                         }
                     )
@@ -71,7 +76,23 @@ internal fun App() = PreComposeApp {
                 scene(
                     "/history",
                 ) {
-                    HistoryUI()
+                    HistoryUI(
+                        onBack = {
+                            navigator.goBack()
+                        },
+                        onItem = {
+                            navigator.navigate("/result")
+                        }
+                    )
+                }
+                scene(
+                    "/result",
+                ) {
+                    ResultUi(
+                        onBack = {
+                            navigator.goBack()
+                        },
+                    )
                 }
             }
         }

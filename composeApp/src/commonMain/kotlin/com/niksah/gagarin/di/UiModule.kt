@@ -7,12 +7,12 @@ import org.koin.dsl.module
 
 val uiModule = module {
     factory {
-        MainViewModel(get(), get(), get())
+        MainViewModel(get(), get())
     }
     factory {
-        ResultViewModel(get())
+        ResultViewModel(get(),get())
     }
     factory {
-        HistoryViewModel(get(), get())
+        HistoryViewModel(get(), get(), get())
     }
 }

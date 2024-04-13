@@ -18,8 +18,3 @@ actual fun FileChooser(
         }
     }
 }
-
-@Composable
-actual fun Content(onShowFilePicker: () -> Unit, onCamera: () -> Unit) {
-    FullScreenUi(onShowFilePicker)
-}

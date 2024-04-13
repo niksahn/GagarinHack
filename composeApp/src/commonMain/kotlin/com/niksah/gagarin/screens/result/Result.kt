@@ -1,6 +1,7 @@
 package com.niksah.gagarin.screens.result
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import com.niksah.gagarin.utils.base.subscribeEvents
 import com.niksah.gagarin.utils.base.subscribeScreenState
 import com.niksah.gagarin.utils.views.Loader
@@ -17,14 +18,13 @@ fun ResultUi(
             ResultEvent.GoBack -> onBack()
         }
     }
-    if (state.value is ResultState.Content) {
-        Content(
+    when (state.value) {
+        is ResultState.Content -> Content(
             onBack = viewModel::onBack,
             data = state.value as ResultState.Content
         )
-    }
-    if (state.value is ResultState.Loading) {
-        Loader()
+
+        ResultState.Loading -> Loader()
     }
 }
 

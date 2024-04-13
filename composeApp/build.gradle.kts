@@ -13,24 +13,6 @@ plugins {
 }
 
 kotlin {
-    val osName = System.getProperty("os.name")
-    val targetOs = when {
-        osName == "Mac OS X" -> "macos"
-        osName.startsWith("Win") -> "windows"
-        osName.startsWith("Linux") -> "linux"
-        else -> error("Unsupported OS: $osName")
-    }
-
-    val osArch = System.getProperty("os.arch")
-    var targetArch = when (osArch) {
-        "x86_64", "amd64" -> "x64"
-        "aarch64" -> "arm64"
-        else -> error("Unsupported arch: $osArch")
-    }
-
-    val version = "0.7.9" // or any more recent version
-    val target = "${targetOs}-${targetArch}"
-
     androidTarget {
         compilations.all {
             kotlinOptions {
@@ -112,9 +94,9 @@ kotlin {
             implementation(libs.androidx.activityCompose)
             implementation(libs.kotlinx.coroutines.android)
             implementation(libs.ktor.client.okhttp)
-            implementation (libs.gms.play.services.mlkit.document.scanner)
-           // implementation (libs.koin.koin.android)
-            implementation ("com.github.bumptech.glide:compose:1.0.0-beta01")
+            implementation(libs.gms.play.services.mlkit.document.scanner)
+            // implementation (libs.koin.koin.android)
+            implementation("com.github.bumptech.glide:compose:1.0.0-beta01")
             implementation("com.google.accompanist:accompanist-permissions:0.35.0-alpha")
             implementation("io.github.ujizin:camposer:0.4.0")
         }
