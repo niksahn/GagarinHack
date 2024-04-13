@@ -38,7 +38,7 @@ fun MobileUI(
     Scaffold(
         topBar = {
             Row(
-                modifier = Modifier.fillMaxWidth().padding(top = 32.dp)
+                modifier = Modifier.fillMaxWidth().padding(top = 32.dp, start = 16.dp)
             ) {
                 Icon(
                     painter = painterResource(Res.drawable.arrow_back),
