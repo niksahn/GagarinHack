@@ -16,8 +16,14 @@ class MainViewModel(
     init {
         if (!settingsRepository.id.exists()) {
             settingsRepository.id.set(
-                "123"
-              //  ('A'..'z').map { it }.shuffled().subList(0, 16).joinToString("")
+                // "123"
+                ('A'..'z').map { it }
+                    .shuffled()
+                    .subList(0, 16)
+                    .joinToString("")
+                    .replace("/", "")
+                    .replace("]", "")
+                    .replace("\\", "")
             )
         }
     }

@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.Button
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -33,7 +34,8 @@ import org.jetbrains.compose.resources.painterResource
 @Composable
 fun MobileUI(
     data: ResultState.Content,
-    onBack: () -> Unit
+    onBack: () -> Unit,
+    onSave: () -> Unit
 ) {
     Scaffold(
         topBar = {
@@ -99,6 +101,12 @@ fun MobileUI(
                     }
                 }
             }
+//            Button(
+//                onClick = onSave,
+//                content = {
+//                    Text("Загрузить отчет")
+//                }
+//            )
         }
     }
 }

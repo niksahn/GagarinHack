@@ -23,12 +23,13 @@ sealed class HistoryEvent : Event() {
     data class Failure(
         val message: String
     ) : HistoryEvent()
+
+    data object OnItem : HistoryEvent()
 }
 
 data class History(
     val image: ImageBitmap?,
     val name: String,
-    //  val date: String,
     val data: String?,
     val status: Status,
     val id: String,
@@ -46,7 +47,7 @@ data class History(
 
 suspend fun com.niksah.gagarin.data.models.History.toHistoryState() = History(
     image = null,
-    data = series.toString() ?: "",
+    data = series,
     status = when (status) {
         0 -> History.Status.IN_PROGRESS
         1 -> History.Status.CHECKED

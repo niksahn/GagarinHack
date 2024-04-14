@@ -16,7 +16,7 @@ import moe.tlaster.precompose.koin.koinViewModel
 @Composable
 fun HistoryUI(
     onBack: () -> Unit,
-    onItem: () -> Unit
+    onItem: () -> Unit,
 ) {
     var showError by remember { mutableStateOf("") }
     val viewModel = koinViewModel(HistoryViewModel::class)
@@ -26,6 +26,8 @@ fun HistoryUI(
             is HistoryEvent.Failure -> {
                 showError = it.message
             }
+
+            HistoryEvent.OnItem -> onItem()
         }
     }
     if (showError.isNotBlank()) {
@@ -33,21 +35,26 @@ fun HistoryUI(
             showError = showError,
             onDismissRequest = {
                 showError = ""
+                onBack()
                 //  viewModel.fetch()
             }
         )
     }
-    if (state.value.isPrepairing) {
+    if (state.value.isPrepairing && CurrentPlatform.current != Platform.Android) {
         Loader()
     } else {
+        if (state.value.history.isEmpty() && !state.value.isPrepairing) {
+            showError = "История пуста"
+        }
         when (CurrentPlatform.current) {
             Platform.Ios,
             Platform.Android -> MobileUi(
                 state = state.value,
                 onItem = {
                     viewModel.onItem(it)
-                    onItem()
-                }
+                },
+                isLoading = state.value.isPrepairing,
+                onRefresh = viewModel::fetch
             )
 
             Platform.Web,

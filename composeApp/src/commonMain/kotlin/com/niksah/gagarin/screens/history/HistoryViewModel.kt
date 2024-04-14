@@ -25,6 +25,7 @@ class HistoryViewModel(
         launchViewModelScope {
             val selected = responseRepository.history.value.first { it.id == id }
             responseRepository.selected.emit(selected)
+            if (selected.status == 1) trySendEvent(HistoryEvent.OnItem)
         }
     }
 
@@ -49,26 +50,30 @@ class HistoryViewModel(
                         mutex.withLock {
                             history.forEach { curhist ->
                                 async {
-                                    apiRepository.getImage(curhist.fileId)
-                                        .fold(
-                                            ifRight = { image ->
-                                                println("AAAAA $image")
-                                                updateState {
-                                                    it.copy(
-                                                        history = it.history.map { hisrItem ->
-                                                            if (hisrItem.id == curhist.id) {
-                                                                hisrItem.copy(
-                                                                    image = decode(encodeToByteArray(image))
-                                                                )
-                                                            } else {
-                                                                hisrItem
+                                    curhist.fileId?.let {
+                                        apiRepository.getImage(it)
+                                            .fold(
+                                                ifRight = { image ->
+                                                    println("AAAAA $image")
+                                                    updateState {
+                                                        it.copy(
+                                                            history = it.history.map { hisrItem ->
+                                                                if (hisrItem.id == curhist.id) {
+                                                                    hisrItem.copy(
+                                                                        image = decode(
+                                                                            encodeToByteArray(image)
+                                                                        )
+                                                                    )
+                                                                } else {
+                                                                    hisrItem
+                                                                }
                                                             }
-                                                        }
-                                                    )
-                                                }
-                                            },
-                                            ifLeft = {}
-                                        )
+                                                        )
+                                                    }
+                                                },
+                                                ifLeft = {}
+                                            )
+                                    }
                                 }
                             }
                         }

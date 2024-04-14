@@ -33,7 +33,7 @@ sealed class ResultState : State() {
 suspend fun History.toResultState(image: ImageBitmap?): ResultState.Content {
     val strings = mapOf(
         getString(Res.string.doc_type) to type.toStr(),
-        getString(Res.string.page_num) to number.toString(),
+        getString(Res.string.page_num) to page_number.toString(),
         getString(Res.string.series) to series.toString(),
         getString(Res.string.number) to number.toString()
     ).map {
@@ -42,9 +42,9 @@ suspend fun History.toResultState(image: ImageBitmap?): ResultState.Content {
     return ResultState.Content(
         image = image,
         fields = strings.plus(
-            data.map {
-                ResultState.Content.Field(title = it.key.toStr(), value = it.value)
-            }
+            data?.map {
+                ResultState.Content.Field(title = it.key, value = it.value)
+            } ?: emptyList()
         )
     )
 }
@@ -52,7 +52,7 @@ suspend fun History.toResultState(image: ImageBitmap?): ResultState.Content {
 suspend fun History.DocumentType?.toStr() =
     when (this) {
         History.DocumentType.PERSONAL_PASSPORT -> getString(Res.string.passport)
-        null -> ""
+        null -> "Неизвестный тип"
         History.DocumentType.VEHICLE_PASSPORT -> getString(Res.string.pts)
         History.DocumentType.DRIVER_LICENSE -> getString(Res.string.rider_r)
         History.DocumentType.VEHICLE_CERTIFICATE -> getString(Res.string.sts)
@@ -60,8 +60,9 @@ suspend fun History.DocumentType?.toStr() =
 
 sealed class ResultEvent : Event() {
     data object GoBack : ResultEvent()
+    data class Failure(val message: String) : ResultEvent()
 }
 
-expect fun encodeToByteArray(image: String) :ByteArray
+expect fun encodeToByteArray(image: String): ByteArray
 
 expect fun decode(byteArray: ByteArray): ImageBitmap

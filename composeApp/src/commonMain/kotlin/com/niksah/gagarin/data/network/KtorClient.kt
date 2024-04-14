@@ -34,9 +34,9 @@ class KtorClient : NetworkClient {
             )
         }
         install(HttpTimeout) {
-            connectTimeoutMillis = 500
-            requestTimeoutMillis = 60000
-            socketTimeoutMillis = 50000
+            connectTimeoutMillis = 6000
+            requestTimeoutMillis = 6000
+            socketTimeoutMillis = 6000
         }
         defaultRequest {
             url(BASE_URL)

@@ -3,45 +3,20 @@ package com.niksah.gagarin.data.models
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
-
-@Serializable
-data class Response(
-    val file: ByteArray,
-    val fields: Map<String, String>
-) {
-    override fun equals(other: Any?): Boolean {
-        if (this === other) return true
-        if (other == null || this::class != other::class) return false
-
-        other as Response
-
-        if (!file.contentEquals(other.file)) return false
-        if (fields != other.fields) return false
-
-        return true
-    }
-
-    override fun hashCode(): Int {
-        var result = file.contentHashCode()
-        result = 31 * result + fields.hashCode()
-        return result
-    }
-}
-
 @Serializable
 data class History(
     @SerialName("file_id")
-    val fileId: String,
-    val data: Map<Data, String>,
+    val fileId: String?,
+    val data: Map<String, String>?,
     @SerialName("user_id")
     val userId: String?,
     @SerialName("guid")
     val id: String?,
     val status: Int,
     val type: DocumentType?,
-    val series: Int?,
-    val number: Int?,
-    val page_number: Int?
+    val series: String?,
+    val number: String?,
+    val page_number: String?
 ) {
     @Serializable
     enum class DocumentType {

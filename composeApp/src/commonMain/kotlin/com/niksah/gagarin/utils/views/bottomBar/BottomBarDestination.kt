@@ -17,7 +17,6 @@ import androidx.compose.ui.unit.dp
 import com.niksah.seconHack.ui.theme.SelectedIcon
 import com.niksah.seconHack.ui.theme.UnSelectedIcon
 import gagarinhak.composeapp.generated.resources.Res
-import gagarinhak.composeapp.generated.resources.icon_container
 import gagarinhak.composeapp.generated.resources.point
 import moe.tlaster.precompose.flow.collectAsStateWithLifecycle
 import moe.tlaster.precompose.navigation.Navigator

@@ -4,7 +4,7 @@
     <string name="set_permissions">Самостоятельно укажите разрешения для приложения</string>
     <string name="load_file">Загрузить \nдокумент</string>
     <string name="load_file_">Загрузите файл</string>
-    <string name="doc_scanner">Сканнер документов</string>
+    <string name="doc_scanner">Сканер документов</string>
     <string name="go_back">Вернуться \nназад</string>
     <string name="file_loaded">Файл загружен\n Загляните в историю</string>
     <string name="passport">Паспорт</string>

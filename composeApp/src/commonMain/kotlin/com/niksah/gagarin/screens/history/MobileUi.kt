@@ -21,17 +21,26 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
 import com.niksah.gagarin.utils.views.Loader
+import com.niksah.gagarin.utils.views.PullToRefreshState
+import com.niksah.gagarin.utils.views.PullToRefreshes
 import org.jetbrains.compose.resources.painterResource
 
 @Composable
 fun MobileUi(
     state: HistoryState,
-    onItem: (id: String) -> Unit
+    onItem: (id: String) -> Unit,
+    onRefresh: () -> Unit,
+    isLoading: Boolean
 ) {
     Scaffold {
-        LazyColumn(modifier = Modifier.padding(it).padding(16.dp)) {
-            items(items = state.history) {
-                HistoryItem(modifier = Modifier.clickable { onItem(it.id) }, item = it)
+        PullToRefreshes.Primary(
+            onRefresh = onRefresh,
+            state = PullToRefreshState(isRefreshing = isLoading)
+        ) {
+            LazyColumn(modifier = Modifier.padding(it).padding(16.dp)) {
+                items(items = state.history) {
+                    HistoryItem(modifier = Modifier.clickable { onItem(it.id) }, item = it)
+                }
             }
         }
     }
@@ -53,10 +62,10 @@ fun HistoryItem(
                     bitmap = it,
                     contentDescription = null,
                     modifier = Modifier
-                        .size(32.dp, 72.dp)
+                        .size(70.dp, 70.dp)
                         .clip(MaterialTheme.shapes.extraLarge),
                 )
-            } ?: Box(modifier = Modifier.size(64.dp)) {
+            } ?: Box(modifier = Modifier.size(120.dp)) {
                 Loader()
             }
 

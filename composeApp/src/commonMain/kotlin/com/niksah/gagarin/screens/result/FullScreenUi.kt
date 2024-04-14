@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.Button
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -31,13 +32,16 @@ import org.jetbrains.compose.resources.stringResource
 
 @Composable
 fun FullScreenUi(
-    data: ResultState.Content, onBack: () -> Unit
+    data: ResultState.Content,
+    onBack: () -> Unit,
+    onSave: () -> Unit
 ) {
     Scaffold(topBar = {
         TopBarBack(onBack = onBack)
     }) {
         Row(
-            modifier = Modifier.padding(it).padding(16.dp), horizontalArrangement = Arrangement.spacedBy(16.dp)
+            modifier = Modifier.padding(it).padding(16.dp),
+            horizontalArrangement = Arrangement.spacedBy(16.dp)
         ) {
             data.image?.let { it1 ->
                 Image(
@@ -48,28 +52,37 @@ fun FullScreenUi(
                 painter = painterResource(Res.drawable.icon),
                 contentDescription = null
             )
-            LazyColumn(
-                modifier = Modifier.weight(1F), verticalArrangement = Arrangement.spacedBy(16.dp)
-            ) {
-                items(
-                    items = data.fields
-                ) { item ->
-                    Column {
-                        Row(modifier = Modifier.fillMaxWidth()) {
-                            Text(
-                                modifier = Modifier.weight(1f),
-                                text = item.title,
-                                style = MaterialTheme.typography.bodyMedium
-                            )
-                            Text(
-                                modifier = Modifier,
-                                text = item.value,
-                                style = MaterialTheme.typography.bodyLarge
-                            )
+            Column {
+                LazyColumn(
+                    modifier = Modifier.weight(1F),
+                    verticalArrangement = Arrangement.spacedBy(16.dp)
+                ) {
+                    items(
+                        items = data.fields
+                    ) { item ->
+                        Column {
+                            Row(modifier = Modifier.fillMaxWidth()) {
+                                Text(
+                                    modifier = Modifier.weight(1f),
+                                    text = item.title,
+                                    style = MaterialTheme.typography.bodyMedium
+                                )
+                                Text(
+                                    modifier = Modifier,
+                                    text = item.value,
+                                    style = MaterialTheme.typography.bodyLarge
+                                )
+                            }
+                            HorizontalDivider()
                         }
-                        HorizontalDivider()
                     }
                 }
+//                Button(
+//                    onClick = onSave,
+//                    content = {
+//                        Text("Загрузить отчет")
+//                    }
+//                )
             }
         }
     }

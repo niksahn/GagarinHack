@@ -69,7 +69,7 @@ internal actual fun Camera(
                 CameraEvent.MakedPhoto -> {
                     Toast.makeText(
                         context,
-                        "Фото сделано",
+                        "Фото загружено",
                         Toast.LENGTH_SHORT
                     ).show()
                     makedPhoto()

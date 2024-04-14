@@ -28,7 +28,10 @@ class FileStorageRepository {
 		if (parentFile?.exists() == false) parentFile?.mkdirs()
 		createNewFile()
 	}
-	
+
+	fun writeBytesTofile(){
+
+	}
 	@RequiresApi(Build.VERSION_CODES.Q)
 	val imageContentValues: ContentValues = getContentValues(JPEG_MIME_TYPE)
 	
@@ -45,7 +48,7 @@ class FileStorageRepository {
 	companion object {
 		private const val JPEG_MIME_TYPE = "image/jpeg"
 		private const val VIDEO_MIME_TYPE = "video/mp4"
-		private const val RELATIVE_PATH = "SmartWatch"
-		private const val FILE_NAME = "SmartWatchReport"
+		private const val RELATIVE_PATH = "TechTitans"
+		private const val FILE_NAME = "TechTitansReport"
 	}
 }
